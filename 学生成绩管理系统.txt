@@ -1,0 +1,326 @@
+#include<iostream>
+#include<string>
+using namespace std;
+
+struct  Node {
+	int num;
+	string name;
+	double grade;
+	Node* next;
+};
+class list {
+	Node* header;
+public:
+	list() {
+		header = NULL;
+	}
+	
+	Node* creat(int x) {                                    //建立单个节点
+		Node  *q = NULL;
+		
+		q = new Node;                                     
+		cout << "输入第"<<x<<"位学生的信息" << endl;
+		cout << "学号:";
+		cin >> q->num;
+		cout << "姓名:";
+		cin >> q->name;
+		cout << "分数:";
+		cin >> q->grade;
+		q->next = NULL;
+		system("cls");
+		return q;
+	}
+	Node* creat() {                                    //建立单个节点
+		Node  *q = NULL;
+
+		q = new Node;
+		cout << "输入待插入学生信息" << endl;
+		cout << "学号:";
+		cin >> q->num;
+		cout << "姓名:";
+		cin >> q->name;
+		cout << "分数:";
+		cin >> q->grade;
+		q->next = NULL;
+		system("cls");
+		return q;
+	}
+
+	void buildlist(int x) {
+		int i;
+		for (i = 0;i < x;i++)
+		{
+			Node* p = creat(i+1);
+			Node* f = header;
+			if (header != NULL) {
+				while (f->next != NULL)
+					f = f->next;
+
+				add(f, p);
+			}
+			else {
+				header = p;
+			}
+		}
+	
+	}
+	Node* add(Node* a, Node* b) {      //在变量1后插入节点变量2
+		if (a != NULL) {
+			b->next = a->next;
+			a->next = b;
+		}
+		else {
+			b->next = header;
+			header = a;
+		}
+		return b;
+	}
+
+	void display() {
+		if (header != NULL) {
+			Node* p;
+			p = header;
+			while (p->next != NULL)
+			{
+				cout << "遍历学生信息：" << endl
+					<< "学号:" << p->num << endl
+					<< "姓名:" << p->name << endl
+					<< "成绩:" << p->grade << endl
+					<< "------------" << endl;
+				p = p->next;
+
+			}
+			cout << "学号:" << p->num << endl
+				<< "姓名:" << p->name << endl
+				<< "成绩:" << p->grade << endl
+				<< "------------" << endl;
+			system("pause");
+
+		}
+		else {
+			cout << "成绩表已空" << endl;
+			system("pause");
+			system("cls");
+		}
+	}
+	
+	void show(Node* n) {
+		cout << "学号:" << n->num << endl
+			<< "姓名:" << n->name << endl
+			<< "成绩:" << n->grade << endl
+			<< "------------" << endl;
+	
+	}
+	void find(Node* r) {
+		
+		if (r!=NULL)
+		{
+			cout << "查找成功，输出该生信息：" << endl;
+			show(r);
+		}
+		else
+		{
+			cout << "查找失败，请核对输入信息\n";
+			system("pause");
+			system("cls");
+		}
+	}
+	
+	void insert(Node* r) {
+		Node* newstudent;
+		if (r!=NULL) {
+			newstudent = creat();
+			newstudent->next = r->next;
+			r->next = newstudent;
+			cout << "插入成功！" << endl;
+		}
+		else
+			cout << "未找到插入位置，请重新输入..." << endl;
+	}
+	
+	Node* located(int n) {                     //查找函数返回查找地址
+		Node* f = header;
+		while (f->next != NULL&&f->num != n)
+			f = f->next;
+		if (f->num == n)
+			return f;
+		else
+		{
+			
+			return NULL;
+		}
+	}
+
+	Node* located(string s) {                     //查找函数返回查找地址
+		Node* f = header;
+		while (f->next != NULL&&f->name != s)
+			f = f->next;
+		if (f->name == s)
+			return f;
+		else
+		{
+			cout << "未找到该学生请核对信息..." << endl;
+			return NULL;
+		}
+	}
+	void remove(Node* r) {				//删除制定地址的节点
+		if (r != NULL) {
+			if (r != header) {
+				Node* f = header;
+				while (f->next != r)
+				{
+					f = f->next;
+				}
+				f->next = r->next;
+
+			}
+			else {
+				header = header->next;
+			}
+
+			delete r;
+			cout << "删除成功！" << endl;
+			system("pause");
+		}
+		cout << "待删除节点不存在..." << endl;
+	}
+	void deleteall() {
+		Node *d1 = header;
+		Node *d2 = NULL;
+		while (d1->next != NULL) {
+			d2 = d1;
+			d1 = d1->next;
+			delete d2;
+		}
+		delete d1;
+		header = NULL;		
+		cout << "已清除学生信息"<<endl;
+		system("pause");
+	}
+	
+
+};
+void main() {
+	list stu;
+	int key = 10;
+	int key2 = 0;
+	int number = 0;
+	string f;
+	while (key) {
+		system("cls");
+		cout << "******************************************************" << endl;
+		cout << "                                                      " << endl;
+		cout << "               欢迎使用学生成绩管理系统！             " << endl;
+		cout << "                 1   建立学生成绩信息                 " << endl;
+		cout << "                 2   查看指定学生信息                 " << endl;
+		cout << "                 3   插入学生成绩信息                 " << endl;
+		cout << "                 4   删除指定学生成绩信息             " << endl;
+		cout << "                 5   遍历学生成绩信息                 " << endl;
+		cout << "                 6   删除所有学生成绩信息             " << endl;
+		cout << "                 0   结束程序                         " << endl;
+		cout << "                                                      " << endl;
+		cout << "******************************************************" << endl;
+		cout << "输入你的指令：";
+		cin >> key;
+		if (key == 1) {
+			system("cls");
+			cout << "请输入需要录入的学生信息个数" << endl;
+			cin >> number;
+			system("cls");
+			stu.buildlist(number);
+			number = 0;
+		}
+		else if (key == 2) {
+			system("cls");
+			cout << "******************************************************" << endl;
+			cout << "                                                      " << endl;
+			cout << "                  请选择你的查找方式                  " << endl;
+			cout << "                   1   按姓名查找                     " << endl;
+			cout << "                   2   按学号查找                     " << endl;
+			cout << "                   0   返回上一菜单                   " << endl;
+			cout << "                                                      " << endl;
+			cout << "******************************************************" << endl;
+			cout << "输入你的指令：";
+			cin >> key2;
+			if (key2 == 1) {
+				cout << "请输入待查看的学生姓名：";
+				cin >> f;
+				stu.find(stu.located(f));
+				f = "";
+			}
+			else if (key2 == 2) {
+				cout << "请输入待查看的学生的学号：";
+				cin >> number;
+				stu.find(stu.located(number));
+				number = 0;
+
+			}
+			key2 = 0;
+
+		}
+		else if (key == 3) {
+			system("cls");
+			cout << "******************************************************" << endl;
+			cout << "                                                      " << endl;
+			cout << "                  请选择你的插入方式                  " << endl;
+			cout << "                 1   在指定姓名的学生后插入           " << endl;
+			cout << "                 2   在指定学号的学生后插入           " << endl;
+			cout << "                 0   返回上一菜单                     " << endl;
+			cout << "                                                      " << endl;
+			cout << "******************************************************" << endl;
+			cout << "输入你的指令：";
+			cin >> key2;
+			if (key2 == 1) {
+				cout << "请输入学生姓名已确定插入位置：";
+				cin >> f;
+				stu.insert(stu.located(f));
+				f = "";
+				
+			}
+			else if (key2 == 2) {
+				cout << "请输入学生的学号已确定插入位置：";
+				cin >> number;
+				stu.insert(stu.located(number));
+			}
+			key2 = 0;
+
+		}
+		else if (key == 4) {
+			system("cls");
+			cout << "******************************************************" << endl;
+			cout << "                                                      " << endl;
+			cout << "                  请选择你的删除方式                  " << endl;
+			cout << "                 1   删除指定姓名的学生               " << endl;
+			cout << "                 2   删除指定学号的学生               " << endl;
+			cout << "                 0   返回上一菜单                     " << endl;
+			cout << "                                                      " << endl;
+			cout << "******************************************************" << endl;
+			cout << "输入你的指令：";
+			cin >> key2;
+			if (key2 == 1) {
+				cout << "请输入待删除的学生姓名：";
+				cin >> f;
+				stu.remove(stu.located(f));
+				f = "";
+			}
+			else if (key2 == 2) {
+				cout << "请输入待删除的学生学号：";
+				cin >> number;
+				stu.remove(stu.located(number));
+				number = 0;
+			}
+			key2 = 0;
+
+		}
+		else if (key == 5) {
+			system("cls");
+			stu.display();
+
+		}
+		else if (key == 6) {
+			system("cls");
+			stu.deleteall();
+
+		}
+	}
+}
